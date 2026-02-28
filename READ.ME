@@ -1,0 +1,188 @@
+markdown
+# FaSIVA Implementation
+
+Facial Signature for Identification, Verification and Authentication of Persons
+
+This is a complete implementation of the FaSIVA system as described in the paper:
+"FaSIVA: Facial signature for identification, verification and authentication of persons"
+
+## Features
+
+- **Face Detection**: MTCNN-based face detection and alignment
+- **Super-Resolution**: FSRCNN for enhancing low-resolution face images (k=4)
+- **Feature Extraction**:
+  - F vector: 2062-dimensional identification vector (ResNet-50 based)
+  - E vector: 128-dimensional verification vector (FaceNet based)
+- **Liveness Detection**:
+  - Reflection-based detection (equation 7)
+  - Eye blink detection (equation 8, 15)
+  - CNN-based spoofing detection (adapted AlexNet)
+- **Authentication Pipeline**:
+  1. Face detection and super-resolution
+  2. Identification using F vector
+  3. Verification using E vector
+  4. Liveness check using A vector
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd fasiva_implementation
+Install dependencies:
+
+bash
+pip install -r requirements.txt
+Download required datasets and models:
+
+bash
+python train.py --component prepare
+Usage
+Basic Usage
+python
+from main import FaSIVA
+
+# Initialize system
+fasiva = FaSIVA()
+
+# Process an image
+result = fasiva.process_image("path/to/image.jpg")
+
+# Identify a person
+result = fasiva.identify_person("path/to/image.jpg")
+
+# Authenticate a person
+result = fasiva.authenticate_person("path/to/image.jpg", person_id=1)
+
+# Register a new person
+fasiva.register_person(
+    ["image1.jpg", "image2.jpg", "image3.jpg"],
+    person_name="John Doe"
+)
+Command Line Interface
+bash
+# Run the complete system
+python main.py
+
+# Train specific components
+python train.py --component super_res    # Train super-resolution
+python train.py --component features     # Train feature extractors
+python train.py --component liveness     # Train liveness detector
+python train.py --component all          # Train all components
+Project Structure
+text
+fasiva_implementation/
+├── config.py              # Configuration parameters
+├── main.py               # Main pipeline and CLI
+├── train.py              # Training scripts
+├── database.py           # Face database management
+├── utils.py              # Utility functions
+├── face_detection.py     # MTCNN face detection
+├── super_resolution.py   # FSRCNN implementation
+├── feature_extraction.py # Feature extraction models
+├── liveness_detection.py # Liveness detection
+├── requirements.txt      # Python dependencies
+├── models/              # Saved models directory
+├── datasets/            # Datasets directory
+└── logs/               # Log files
+Configuration
+Key parameters in config.py:
+
+python
+THRESHOLD_RESOLUTION = (35, 35)  # Minimum acceptable resolution
+SUPER_RES_FACTOR = 4             # Super-resolution factor k
+RESNET_FEATURES_DIM = 2062       # F vector dimensions
+FACENET_FEATURES_DIM = 128       # E vector dimensions
+EYE_BLINK_THRESHOLD = 0.3        # EAR threshold for blink detection
+Performance Metrics
+The system calculates standard biometric metrics:
+
+FAR (False Acceptance Rate)
+
+FRR (False Rejection Rate)
+
+TPR (True Positive Rate, Sensitivity)
+
+TNR (True Negative Rate, Specificity)
+
+ACC (Accuracy)
+
+Requirements
+Python 3.8+
+
+PyTorch 2.0+
+
+OpenCV 4.8+
+
+dlib 19.24+
+
+facenet-pytorch 2.5+
+
+Datasets
+The system is designed to work with:
+
+LFW (Labeled Faces in the Wild) - for super-resolution training
+
+VGGFace2 or CASIA-WebFace - for feature extractor training
+
+NUAA, Replay-Attack, CASIA-FASD - for liveness detection training
+
+References
+Based on the paper:
+"FaSIVA: Facial signature for identification, verification and authentication of persons"
+by Elie Tagne Fute, Lionel Landry Sop Deffo, Emmanuel Toney
+
+License
+This implementation is for research and educational purposes.
+
+Citation
+If you use this implementation, please cite the original paper:
+
+text
+@article{fute2021fasiva,
+  title={FaSIVA: Facial signature for identification, verification and authentication of persons},
+  author={Fute, Elie Tagne and Deffo, Lionel Landry Sop and Toney, Emmanuel},
+  journal={Array},
+  volume={13},
+  pages={100112},
+  year={2021}
+}
+text
+
+## **How to Use the Complete Implementation:**
+
+1. **First, install dependencies:**
+```bash
+pip install -r requirements.txt
+Prepare the project structure:
+
+bash
+python -c "from utils import create_directory_structure; create_directory_structure()"
+Download necessary datasets:
+
+bash
+python train.py --component prepare
+Train the models (optional):
+
+bash
+# Train super-resolution model
+python train.py --component super_res
+
+# Or train all components
+python train.py --component all
+Run the main system:
+
+bash
+python main.py
+For programmatic use:
+
+python
+from main import FaSIVA
+
+# Initialize
+fasiva = FaSIVA()
+
+# Use the system
+result = fasiva.authenticate_person("your_image.jpg", person_id=1)
+print(result)
+

@@ -1,0 +1,21 @@
+name: fasiva
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - numpy=1.24
+  - scipy=1.10
+  - opencv
+  - pillow
+  - tqdm
+  - requests
+  - matplotlib
+  - scikit-learn
+  - pytorch=2.0
+  - torchvision=0.15
+  - pip
+  - pip:
+    - facenet-pytorch
+    - dlib
