@@ -117,7 +117,7 @@ class AblationStudies:
                 image = load_image(img_path)
                 faces = self.fasiva.face_detector.detect_faces(image)
                 
-                if faces:
+                if faces: 
                     # Would be accepted without liveness check
                     results['real_accepted'] += 1
             except:
